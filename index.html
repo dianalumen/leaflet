@@ -208,6 +208,20 @@ h2.sec{font-size:13px;font-weight:600;color:var(--muted);margin:8px 0 0}
 .rowbtn .chev{margin-left:auto;width:16px;height:16px;color:var(--muted)}
 .info{font-size:14px;color:var(--muted);padding:2px 6px;margin:0}
 .accs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:8px}
+.pick.hue6{grid-template-columns:repeat(6,minmax(0,1fr))}
+.shades{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.shades button{border:0;border-radius:16px;height:44px;background:var(--c);color:#141414;font-weight:600;font-size:13px;transition:background .25s,box-shadow .2s}
+.shades button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--bg2),0 0 0 5px var(--ink)}
+.pinb{align-self:flex-start;border:0;background:var(--soft);border-radius:999px;padding:9px 14px;font-weight:600;font-size:14px;display:flex;gap:6px;align-items:center}
+.pinb svg{width:16px;height:16px}
+.pinb[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.card .pn{display:inline-grid;vertical-align:middle;margin-left:6px;opacity:.6}
+.card .pn svg{width:14px;height:14px}
+.morebtn{align-self:center;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:8px 14px 8px 10px;font-weight:600;font-size:14px;display:flex;gap:6px;align-items:center;transition:transform .15s}
+.morebtn:active{transform:scale(.95)}
+.morebtn .chv{display:grid;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.morebtn .chv.up{transform:rotate(180deg)}
+.morebtn svg{width:16px;height:16px}
 .accs button{aspect-ratio:1;max-width:100%;border:0;border-radius:50%;background:var(--c);display:grid;place-items:center;color:#141414;transition:transform .2s cubic-bezier(.3,1.6,.5,1),box-shadow .2s}
 .accs button svg{width:18px;height:18px;transform:scale(0);transition:transform .3s cubic-bezier(.3,1.8,.5,1)}
 .accs button[aria-pressed="true"]{box-shadow:0 0 0 3px var(--soft),0 0 0 5px var(--ink)}
@@ -318,6 +332,8 @@ html[data-theme="dark"] .float svg{color:#3E8F2E}
 .dots i{width:7px;height:7px;border-radius:4px;background:var(--line);transition:width .3s cubic-bezier(.2,.8,.2,1),background .3s}
 .dots i.on{width:20px;background:var(--ink)}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -327,6 +343,9 @@ html[data-theme="dark"] .float svg{color:#3E8F2E}
 <script>
 const STR={
 prevWeek:['Poprzedni tydzień','Previous week','Попередній тиждень'],nextWeek:['Następny tydzień','Next week','Наступний тиждень'],prevMonth:['Poprzedni miesiąc','Previous month','Попередній місяць'],nextMonth:['Następny miesiąc','Next month','Наступний місяць'],streakA:['Seria','Streak','Серія'],
+others:['Pozostałe · {0}','More · {0}','Інші · {0}'],showLess:['Zwiń','Show less','Згорнути'],pinTop:['Przypnij na górze','Pin to top','Закріпити вгорі'],shade:['Odcień','Shade','Відтінок'],
+SH:[['pastel','żywy','głęboki'],['pastel','vivid','deep'],['пастель','яскравий','глибокий']],
+HUE:[['Róż','Koral','Pomarańcz','Cytryna','Limonka','Mięta','Błękit','Chaber','Lila','Orchidea','Piasek','Szarość'],['Pink','Coral','Orange','Lemon','Lime','Mint','Sky','Cornflower','Lilac','Orchid','Sand','Grey'],['Рожевий','Кораловий','Помаранчевий','Лимонний','Лаймовий','М’ятний','Блакитний','Волошковий','Бузковий','Орхідея','Пісочний','Сірий']],
 appName:['Leaflet','Leaflet','Leaflet'],
 tabToday:['Dziś','Today','Сьогодні'],tabMonth:['Miesiąc','Month','Місяць'],tabGarden:['Ogród','Garden','Сад'],tabMore:['Więcej','More','Більше'],
 pickLang:['Wybierz język · Choose language · Оберіть мову','Wybierz język · Choose language · Оберіть мову','Wybierz język · Choose language · Оберіть мову'],
@@ -434,6 +453,11 @@ spiew:['Śpiew','Singing','Спів'],fortepian:['Fortepian','Piano','Форте
 const KEY='pozadomem.v1';
 const COLORS=['#FF7EB6','#A6D86B','#8FB8FF','#FFD84D','#FF9A5C','#C6A4FF','#6FDCC0','#FF6B6B'];
 const ACCENTS=['#FFD84D','#FF7EB6','#A6D86B','#8FB8FF','#C6A4FF','#6FDCC0'];
+/* 12 hues x [pastel, vivid, deep]; every shade keeps black text at 5.4:1 or more */
+const PAL=[['#FFC2DC','#FF7EB6','#F25C9F'],['#FFC1BD','#FF6B6B','#F2545B'],['#FFD3B3','#FF9A5C','#F57F3A'],['#FFEDA3','#FFD84D','#F2C21B'],['#D6EDB8','#A6D86B','#86C24A'],['#BFF0E2','#6FDCC0','#3FC6A4'],['#BDE9F7','#7FD4F0','#4BBCE3'],['#CFE0FF','#8FB8FF','#6A9CF5'],['#E6D9FF','#C6A4FF','#A882F5'],['#FAD1F5','#F09AE6','#DE74D2'],['#EEDCC8','#D9B38C','#C79868'],['#E4E2DD','#C9C7C0','#ABA9A2']];
+const LEG=[0,4,7,3,2,8,5,1];
+const findShade=h=>{h=String(h||'').toUpperCase();for(let i=0;i<PAL.length;i++){const j=PAL[i].indexOf(h);if(j>=0)return[i,j]}return null};
+const HEX=/^#[0-9a-f]{6}$/i;
 const LANGS=[['pl','Polski','Cześć'],['en','English','Hello'],['uk','Українська','Привіт']];
 const LOCS={pl:'pl-PL',en:'en-GB',uk:'uk-UA'};
 let LANG='pl';
@@ -492,6 +516,7 @@ const UI={
  check:sv('<path d="m5 12.5 4.5 4.5L19 7.5"/>',3),
  left:sv('<path d="m15 5-7 7 7 7"/>',2.4), right:sv('<path d="m9 5 7 7-7 7"/>',2.4),
  plus:sv('<path d="M12 5v14M5 12h14"/>',2.4), minus:sv('<path d="M5 12h14"/>',2.4),
+ pin:sv('<path d="M9 3.5h6l-1 6.5 3.5 3.5h-11L10 10z"/><path d="M12 13.5V21"/>',2), down:sv('<path d="m6 9 6 6 6-6"/>',2.4),
  swap:sv('<path d="M7 4v15M3.5 7.5 7 4l3.5 3.5M17 20V5M13.5 16.5 17 20l3.5-3.5"/>',2.1),
  flame:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5c.6 3.2 5.5 5.6 5.5 11a5.5 5.5 0 0 1-11 0c0-2.6 1.3-4.3 2.6-5.4.1 1.7.9 2.9 2 3.4C10.5 8.7 11 5.4 12 2.5z"/></svg>',
  home:sv('<path d="M4 10.5 12 4l8 6.5V20h-5.5v-5h-5v5H4z"/>'),
@@ -567,7 +592,7 @@ function demo(){
 /* theme */
 const mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):null;
 function applyTheme(){
-  const th=(S&&S.theme)||{accent:0,mode:'light'};const acc=ACCENTS[th.accent]||ACCENTS[0];
+  const th=(S&&S.theme)||{accent:0,mode:'light'};const acc=accentHex();
   const dark=th.mode==='dark'||(th.mode==='system'&&mq&&mq.matches);
   const r=document.documentElement;r.dataset.theme=dark?'dark':'light';r.style.setProperty('--accent',acc);r.lang=LANG;
   let m=document.querySelector('meta[name="theme-color"]');if(!m){m=document.createElement('meta');m.name='theme-color';document.head.appendChild(m)}m.content=dark?'#121211':'#FFFFFF';
@@ -578,7 +603,8 @@ if(mq&&mq.addEventListener)mq.addEventListener('change',()=>{if(S&&S.theme&&S.th
 const day=k=>S.days[k]||{};
 const actsOf=k=>{const a=day(k).acts||{};return S.activities.filter(x=>a[x.id])};
 const nActs=k=>actsOf(k).length;
-const colorOf=a=>COLORS[(a.c??0)%COLORS.length];
+const colorOf=a=>typeof a.c==='string'&&HEX.test(a.c)?a.c:COLORS[(a.c??0)%COLORS.length];
+const accentHex=()=>{const th=(S&&S.theme)||{};return HEX.test(th.accentHex||'')?th.accentHex:(ACCENTS[th.accent||0]||ACCENTS[0])};
 const actById=id=>S.activities.find(a=>a.id===id);
 function setDay(k,fn){const d=JSON.parse(JSON.stringify(day(k)));fn(d);if(d.acts&&!Object.keys(d.acts).length)delete d.acts;if(d.rit&&!Object.keys(d.rit).length)delete d.rit;if(d.note!=null&&!String(d.note).trim())delete d.note;if(!d.acts&&!d.note&&!d.rit)delete S.days[k];else S.days[k]=d;save()}
 const wdi=k=>(parse(k).getDay()+6)%7;
@@ -673,7 +699,7 @@ function plantSVG(ym,{animate=false,live=false}={}){
   const isCur=ym===today().slice(0,7);
   let mood=n?(blooms?'star':'happy'):'sleep';
   if(isCur&&n&&!nActs(today())&&!nActs(add(today(),-1)))mood='sleep';
-  return drawPlant({leaves,blooms,sun,mood,animate,live,pot:ACCENTS[(S.theme||{}).accent||0],aria:`${mNom(ym)}: ${P(n,'f_leaf')}`});
+  return drawPlant({leaves,blooms,sun,mood,animate,live,pot:accentHex(),aria:`${mNom(ym)}: ${P(n,'f_leaf')}`});
 }
 
 /* ui helpers */
@@ -718,6 +744,13 @@ function titleFor(k,n){
   if(!n) return k===t?(hasMove()?_('ttlWhere'):_('ttlWhat')):_('ttlCalm',base);
   return n>=3?_('ttlFull',base):`${base} <em>${W()}</em>`;
 }
+let showAll=false;
+function rankCards(){
+  const from=add(today(),-30),freq={};Object.keys(S.days).forEach(k=>{if(k<from)return;Object.keys(day(k).acts||{}).forEach(id=>freq[id]=(freq[id]||0)+1)});
+  const list=S.activities.map((a,i)=>({a,i,f:freq[a.id]||0})).sort((x,y)=>(!!y.a.pin-!!x.a.pin)||(y.f-x.f)||(x.i-y.i)).map(x=>x.a);
+  if(list.length<=5)return{top:list,rest:[]};
+  const n=Math.max(4,list.filter(a=>a.pin).length);return{top:list.slice(0,n),rest:list.slice(n)};
+}
 function renderToday(v){
   const t=today(); const lb=S.meta.lastBackup; const needBk=!S.demo&&Object.keys(S.days).length>=3&&(!lb||Date.now()-lb>7*864e5);
   v.innerHTML=`${demoPill()}
@@ -725,6 +758,7 @@ function renderToday(v){
    <div class="week"><button class="round" id="pw" aria-label="${_('prevWeek')}">${UI.left}</button><div class="days" id="days"></div><button class="round" id="nw" aria-label="${_('nextWeek')}">${UI.right}</button></div>
    <div class="hero"><span id="wr"></span><div><div class="big"><span class="odo" id="wc"></span><small>/7</small></div><div class="cap">${hasMove()?_('heroMove'):_('heroGen')}</div></div><button class="streak" id="st" aria-label="${_('streakA')}">${UI.flame}<span class="odo" id="sn"></span></button></div>
    <div class="cards" id="cards"></div>
+   <button class="morebtn" id="mob" hidden></button>
    <button class="addbtn" id="addA">${UI.plus}${_('addCard')}</button>
    <div class="sechead"><h2>${_('rits')}</h2><span id="rc"></span></div>
    <div class="rits" id="rits"></div>
@@ -741,7 +775,12 @@ function renderToday(v){
   note.oninput=()=>{clearTimeout(nt);nt=setTimeout(()=>setDay(cur,d=>{d.note=note.value}),400)};
   renderRits(v);
   const cards=v.querySelector('#cards');
-  cards.innerHTML=S.activities.map(a=>`<button class="card" data-a="${a.id}" style="--c:${colorOf(a)}" aria-pressed="false"><span class="fill"></span><span class="ic">${IC[a.icon]||IC.sun}</span><span class="nm">${esc(a.name)}<small class="mn"></small></span><span class="ck">${UI.check}</span></button>`).join('');
+  const {top,rest}=rankCards(),done=day(cur).acts||{};
+  const shown=showAll?[...top,...rest]:[...top,...rest.filter(a=>done[a.id])],hidden=rest.length-(shown.length-top.length);
+  cards.innerHTML=shown.map(a=>`<button class="card" data-a="${a.id}" style="--c:${colorOf(a)}" aria-pressed="false"><span class="fill"></span><span class="ic">${IC[a.icon]||IC.sun}</span><span class="nm">${esc(a.name)}${a.pin?`<span class="pn" aria-label="${_('pinTop')}">${UI.pin}</span>`:''}<small class="mn"></small></span><span class="ck">${UI.check}</span></button>`).join('');
+  const mob=v.querySelector('#mob');
+  if(rest.length){mob.hidden=false;mob.innerHTML=`<span class="chv${showAll?' up':''}">${UI.down}</span>${showAll?_('showLess'):_('others',hidden)}`;mob.setAttribute('aria-expanded',showAll);mob.onclick=()=>{showAll=!showAll;renderToday(v)}}
+  v.querySelector('#addA').hidden=!!rest.length&&!showAll;
   cards.querySelectorAll('.card').forEach(c=>{
     let lt=null,sx=0,sy=0;const stop=()=>{clearTimeout(lt);lt=null};
     c.addEventListener('pointerdown',e=>{pour(c,e);sx=e.clientX;sy=e.clientY;c._lp=false;stop();lt=setTimeout(()=>{c._lp=true;lt=null;timeSheet(c)},480)});
@@ -760,7 +799,7 @@ function refreshToday(v,first){
   for(let i=0;i<7;i++){const k=add(m,i);const on=nActs(k)>0;wk.push(on);const sel=k===cur;
     strip+=`<button class="wd" data-k="${k}" aria-pressed="${sel}" ${k>t?'disabled':''} aria-label="${fmt(k,{weekday:'long',day:'numeric'})}">${WDN()[i]}<span class="rg">${pre(k)&&!sel?'':ring(actsOf(k).map(colorOf),34,4.5,sel?'color-mix(in srgb, var(--bg) 30%, transparent)':'var(--ring0)',ritFrac(k),sel?'var(--bg)':'var(--ink)')}<b>${parse(k).getDate()}</b></span></button>`}
   const days=v.querySelector('#days');days.innerHTML=strip;
-  days.querySelectorAll('.wd').forEach(b=>b.onclick=()=>{if(b.dataset.k===cur)return;cur=b.dataset.k;v.querySelector('#note').value=day(cur).note||'';syncCards(v);renderRits(v);refreshToday(v)});
+  days.querySelectorAll('.wd').forEach(b=>b.onclick=()=>{if(b.dataset.k===cur)return;cur=b.dataset.k;renderToday(v)});
   v.querySelector('#nw').disabled=add(m,7)>t;
   v.querySelector('#wr').innerHTML=weekRing(wk);
   odo(v.querySelector('#wc'),wk.filter(Boolean).length);
@@ -842,22 +881,28 @@ function toggle(c){
 /* add / edit card */
 function editAct(a){
   if(S.demo){startOwn();return}
-  const isNew=!a; let st=a?{...a}:{name:'',icon:'walk',c:S.activities.length%COLORS.length,min:0};
+  const isNew=!a; let st=a?{...a}:{name:'',icon:'walk',c:PAL[LEG[S.activities.length%8]][1],min:0,pin:false};
+  let [hh,ss]=findShade(colorOf(st))||[typeof st.c==='number'?LEG[st.c%8]:0,1];
   const sg=isNew?suggestions('c',S.activities.map(x=>x.name)):[];
   const body=`${sg.length?`<div class="sugg">${sg.map((s,i)=>`<button data-s="${i}">${esc(s.n)}</button>`).join('')}</div>`:''}
    <input class="tin" id="an" maxlength="24" placeholder="${_('name')}" value="${esc(st.name)}" autocomplete="off">
    <div class="lbl">${_('icon')}</div>${iconPicker(st.icon)}
-   <div class="lbl">${_('color')}</div><div class="pick swatches" id="cp">${COLORS.map((c,i)=>`<button data-c="${i}" style="--c:${c}" aria-label="${_('color')} ${i+1}" aria-pressed="${i===st.c}"></button>`).join('')}</div>
+   <div class="lbl">${_('color')}</div><div class="pick swatches hue6" id="cp">${PAL.map((p,i)=>`<button data-h="${i}" style="--c:${p[ss]}" aria-label="${_('HUE')[i]}" aria-pressed="${i===hh}"></button>`).join('')}</div>
+   <div class="lbl">${_('shade')}</div><div class="shades" id="sp">${[0,1,2].map(j=>`<button data-sh="${j}" style="--c:${PAL[hh][j]}" aria-pressed="${j===ss}">${_('SH')[j]}</button>`).join('')}</div>
+   <button class="pinb" id="pinb" aria-pressed="${!!st.pin}">${UI.pin}${_('pinTop')}</button>
    <div class="lbl">${_('usualTime')}</div><div class="sugg" id="mp">${[...new Set([0,...QMIN,st.min||0])].sort((x,y)=>x-y).map(q=>`<button data-m="${q}" aria-pressed="${(st.min||0)===q}">${q?fmtMin(q):_('noTime')}</button>`).join('')}</div>
    <p style="font-size:13px">${_('timeHint')}</p>`;
   const acts=[{label:_('cancel')}];
   if(!isNew)acts.unshift({label:_('del'),kind:'danger',fn:()=>{confirmDelete(a)}});
   acts.push({label:isNew?_('add'):_('save'),kind:'black',fn:sc=>{const nm=sc.querySelector('#an').value.trim();if(!nm){sc.querySelector('#an').focus();return false}
-    if(isNew){S.activities.push({id:'a'+Date.now().toString(36),name:nm,icon:st.icon,c:st.c,min:st.min||0});toast(_('added',nm))}else{Object.assign(actById(a.id),{name:nm,icon:st.icon,c:st.c,min:st.min||0});toast(_('saved'))}save();render()}});
+    const col=PAL[hh][ss];if(isNew){S.activities.push({id:'a'+Date.now().toString(36),name:nm,icon:st.icon,c:col,min:st.min||0,pin:!!st.pin});toast(_('added',nm))}else{Object.assign(actById(a.id),{name:nm,icon:st.icon,c:col,min:st.min||0,pin:!!st.pin});toast(_('saved'))}save();render()}});
   sheet({title:isNew?_('newCard'):_('editCard'),body,actions:acts,onOpen:sc=>{
     const sel=(q,attr,val)=>sc.querySelectorAll(q+' button').forEach(b=>b.setAttribute('aria-pressed',b.dataset[attr]===String(val)));
     sc.querySelectorAll('#ip button').forEach(b=>b.onclick=()=>{st.icon=b.dataset.ic;sel('#ip','ic',st.icon)});
-    sc.querySelectorAll('#cp button').forEach(b=>b.onclick=()=>{st.c=+b.dataset.c;sel('#cp','c',st.c)});
+    const paintSh=()=>{sc.querySelectorAll('#sp button').forEach(b=>{b.style.setProperty('--c',PAL[hh][+b.dataset.sh]);b.setAttribute('aria-pressed',+b.dataset.sh===ss)});sc.querySelectorAll('#cp button').forEach(b=>b.style.setProperty('--c',PAL[+b.dataset.h][ss]))};
+    sc.querySelectorAll('#cp button').forEach(b=>b.onclick=()=>{hh=+b.dataset.h;sel('#cp','h',hh);paintSh()});
+    sc.querySelectorAll('#sp button').forEach(b=>b.onclick=()=>{ss=+b.dataset.sh;paintSh()});
+    const pb=sc.querySelector('#pinb');pb.onclick=()=>{st.pin=!st.pin;pb.setAttribute('aria-pressed',st.pin)};
     sc.querySelectorAll('#mp button').forEach(b=>b.onclick=()=>{st.min=+b.dataset.m;sel('#mp','m',st.min)});
     sc.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const g=sg[+b.dataset.s];sc.querySelector('#an').value=g.n;st.icon=g.icon;if(g.min){st.min=g.min;sel('#mp','m',st.min)}sel('#ip','ic',st.icon)});
   }});
@@ -924,7 +969,7 @@ function applyImport(obj){
   if(!obj||typeof obj!=='object'||!obj.days){toast(_('notBk'));return}
   const days={};Object.entries(obj.days).forEach(([k,d])=>{if(!/^\d{4}-\d\d-\d\d$/.test(k)||!d)return;const n={};if(d.acts&&Object.keys(d.acts).length){n.acts={};Object.keys(d.acts).forEach(id=>{const m=+((d.acts[id]||{}).m);n.acts[id]=m>0&&m<=1440?{m:Math.round(m)}:{}})}if(d.note)n.note=String(d.note).slice(0,200);if(d.rit&&Object.keys(d.rit).length){n.rit={};Object.keys(d.rit).forEach(id=>n.rit[id]=1)}if(n.acts||n.note||n.rit)days[k]=n});
   const rits=Array.isArray(obj.rituals)?obj.rituals.filter(r=>r&&r.id&&r.name&&Array.isArray(r.days)).map(r=>({id:r.id,name:String(r.name).slice(0,24),icon:IC[r.icon]?r.icon:'sun',days:r.days.filter(d=>d>=0&&d<7)})):null;
-  const acts=(obj.activities||[]).filter(a=>a&&a.id&&a.name).map((a,i)=>({id:a.id,name:String(a.name).slice(0,24),icon:IC[a.icon]?a.icon:'sun',c:Number.isInteger(a.c)?a.c:i%COLORS.length,min:+a.min>0&&+a.min<=600?Math.round(+a.min):0}));
+  const acts=(obj.activities||[]).filter(a=>a&&a.id&&a.name).map((a,i)=>({id:a.id,name:String(a.name).slice(0,24),icon:IC[a.icon]?a.icon:'sun',c:Number.isInteger(a.c)||(typeof a.c==='string'&&HEX.test(a.c))?a.c:i%COLORS.length,pin:!!a.pin,min:+a.min>0&&+a.min<=600?Math.round(+a.min):0}));
   const cnt=Object.keys(days).length;
   const replace=()=>{const keep={lang:S.lang,theme:S.theme};S=fresh();Object.assign(S,keep);if(Array.isArray(obj.areas))S.areas=obj.areas.filter(id=>AREAS.some(a=>a.id===id));if(acts.length)S.activities=acts;if(rits)S.rituals=rits;S.days=days;if(obj.meta&&obj.meta.lastBackup)S.meta.lastBackup=obj.meta.lastBackup;relabel();save();view=view==='onb'?'today':view;render(true);toast(_('loaded',P(cnt,'f_day')))};
   const merge=()=>{if(Array.isArray(obj.areas))obj.areas.forEach(id=>{if(AREAS.some(a=>a.id===id)&&!S.areas.includes(id))S.areas.push(id)});acts.forEach(a=>{if(!actById(a.id))S.activities.push(a)});(rits||[]).forEach(r=>{if(!ritById(r.id))S.rituals.push(r)});Object.entries(days).forEach(([k,d])=>{const e=S.days[k]||{};S.days[k]={...d,...e,acts:{...(d.acts||{}),...(e.acts||{})},rit:{...(d.rit||{}),...(e.rit||{})}};if(!Object.keys(S.days[k].acts).length)delete S.days[k].acts;if(!Object.keys(S.days[k].rit).length)delete S.days[k].rit});relabel();save();render(true);toast(_('merged'))};
@@ -933,11 +978,13 @@ function applyImport(obj){
 }
 function renderMore(v){
   const n=Object.keys(S.days).length,lb=S.meta.lastBackup,ok=lb&&Date.now()-lb<7*864e5,th=S.theme||{accent:0,mode:'light'};
+  let [ah,as]=findShade(accentHex())||[3,1];
   v.innerHTML=`${demoPill()}
    <div><div class="eyebrow">${_('settings')}</div><h1 class="ttl">${_('moreTtl')}</h1></div>
    <h2 class="sec">${_('look')}</h2>
    <div class="group"><div class="lbl" style="padding:8px 10px 0">${_('accent')}</div>
-    <div class="accs" id="accs">${ACCENTS.map((c,i)=>`<button data-acc="${i}" style="--c:${c}" aria-label="${_('ACC')[i]}" aria-pressed="${i===th.accent}">${UI.check}</button>`).join('')}</div>
+    <div class="accs" id="accs">${PAL.map((p,i)=>`<button data-acc="${i}" style="--c:${p[as]}" aria-label="${_('HUE')[i]}" aria-pressed="${i===ah}">${UI.check}</button>`).join('')}</div>
+    <div class="seg" id="ash">${[0,1,2].map(j=>`<button data-ash="${j}" aria-pressed="${j===as}">${_('SH')[j]}</button>`).join('')}</div>
     <div class="lbl" style="padding:4px 10px 0">${_('mode')}</div>
     <div class="seg" id="mode">${['light','dark','system'].map(m=>`<button data-mode="${m}" aria-pressed="${th.mode===m}">${_(m)}</button>`).join('')}</div>
     <div class="lbl" style="padding:4px 10px 0">${_('language')}</div>
@@ -959,7 +1006,9 @@ function renderMore(v){
    <p class="info">${_('dataInfo',n&&!S.demo?` (${P(n,'f_day')})`:'')}</p>
    ${S.demo?'':`<div class="group"><button class="rowbtn" id="wipe" style="color:var(--danger)"><span class="ic">${UI.more}</span>${_('wipe')}</button></div>`}`;
   const go=v.querySelector('#go');if(go)go.onclick=startOwn;
-  v.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{S.theme={...th,accent:+b.dataset.acc};save();applyTheme();v.querySelectorAll('[data-acc]').forEach(z=>z.setAttribute('aria-pressed',z===b))});
+  const setAcc=()=>{S.theme={...(S.theme||th),accentHex:PAL[ah][as]};save();applyTheme();v.querySelectorAll('[data-acc]').forEach(z=>{z.setAttribute('aria-pressed',+z.dataset.acc===ah);z.style.setProperty('--c',PAL[+z.dataset.acc][as])});v.querySelectorAll('[data-ash]').forEach(z=>z.setAttribute('aria-pressed',+z.dataset.ash===as))};
+  v.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{ah=+b.dataset.acc;setAcc()});
+  v.querySelectorAll('[data-ash]').forEach(b=>b.onclick=()=>{as=+b.dataset.ash;setAcc()});
   v.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{S.theme={...(S.theme||th),mode:b.dataset.mode};save();applyTheme();v.querySelectorAll('[data-mode]').forEach(z=>z.setAttribute('aria-pressed',z===b))});
   v.querySelectorAll('[data-lang]').forEach(b=>b.onclick=()=>{LANG=b.dataset.lang;S.lang=LANG;relabel();save();applyTheme();render()});
   v.querySelectorAll('[data-ar]').forEach(b=>b.onclick=()=>{if(S.demo){startOwn();return}const ar=AREAS.find(x=>x.id===b.dataset.ar);if(S.areas.includes(ar.id)){S.areas=S.areas.filter(x=>x!==ar.id);save();render();toast(_('areaOff'))}else packSheet(ar)});
@@ -1010,7 +1059,7 @@ const goStep=(n)=>{dir=n>OB.step?'fwd':'bwd';OB.step=n;render(true);scrollTo(0,0
 function renderOnb(v){
   const dots=`<div class="dots" aria-hidden="true">${[2,3].map(i=>`<i class="${i===OB.step?'on':''}"></i>`).join('')}</div>`;
   const back=`<button class="round" id="ob-b" aria-label="${_('back')}">${UI.left}</button>`;
-  const hello=(mood,anim)=>drawPlant({leaves:[{col:'#A6D86B'},{col:'#8FB8FF',big:1},{col:'#FF7EB6'},{col:'#6FDCC0'},{col:'#C6A4FF'},{col:'#FFD84D'}],blooms:OB.step===1?1:0,sun:OB.step===1,mood,animate:anim,live:true,pot:ACCENTS[(S.theme||{}).accent||0]}).replace('class="plant','class="hello plant');
+  const hello=(mood,anim)=>drawPlant({leaves:[{col:'#A6D86B'},{col:'#8FB8FF',big:1},{col:'#FF7EB6'},{col:'#6FDCC0'},{col:'#C6A4FF'},{col:'#FFD84D'}],blooms:OB.step===1?1:0,sun:OB.step===1,mood,animate:anim,live:true,pot:accentHex()}).replace('class="plant','class="hello plant');
   if(OB.step===0){
     v.innerHTML=`<div class="onb"><div class="rise"><div class="eyebrow">${_('pickLang')}</div><h1 class="ttl">Leaf<em>let</em></h1></div>
      <div class="rise" style="--d:80ms;display:grid">${hello('sleep',true)}</div>

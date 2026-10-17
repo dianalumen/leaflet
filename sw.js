@@ -1,6 +1,6 @@
 // Leaflet: tryb offline. Po każdej zmianie w index.html podbij numer wersji poniżej.
-const VERSION = 'leaflet-v1';
-const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png'];
+const VERSION = 'leaflet-v3';
+const CORE = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon-32.png', 'icon-maskable-512.png', 'icon.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(VERSION).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
