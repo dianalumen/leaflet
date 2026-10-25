@@ -140,12 +140,12 @@ button.chip:active{transform:scale(.95)}
 .tile .k{font-size:13px;color:var(--muted);font-weight:500;margin-top:6px}
 .tile.pink{background:#FF7EB6;color:#141414}.tile.blue{background:#8FB8FF;color:#141414}
 .tile.pink .k,.tile.blue .k{color:#141414}
-.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .rits{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:10px 4px}
 .rit{border:0;background:transparent;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:0;min-width:0}
-.rit .o{width:54px;height:54px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;transition:background .2s,color .2s,transform .3s cubic-bezier(.3,1.8,.5,1)}
+.rit .o{width:54px;height:54px;border-radius:50%;border:2px solid var(--faint);color:var(--muted);display:grid;place-items:center;transition:background .2s,color .2s,transform .3s cubic-bezier(.3,1.8,.5,1)}
 .rit .o svg{width:22px;height:22px}
-.rit[aria-pressed="true"] .o{background:var(--ink);color:var(--bg);transform:scale(1.06)}
+.rit[aria-pressed="true"] .o{background:var(--ink);border-color:var(--ink);color:var(--bg);transform:scale(1.06)}
 .rit:active .o{transform:scale(.9)}
 .rit .t{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rit.add .o{border:2px dashed var(--faint);color:var(--muted)}
@@ -334,6 +334,32 @@ html[data-theme="dark"] .float svg{color:#3E8F2E}
 @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 [hidden]{display:none!important}
+
+/* dots (awareness log) */
+.tgs{display:flex;flex-wrap:wrap;gap:6px}
+.tg{border:1.5px dashed var(--faint);background:transparent;color:var(--muted);border-radius:999px;padding:7px 13px 7px 9px;font-size:14px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:background .2s,color .2s,border-color .2s}
+.tg svg{width:16px;height:16px}
+.tg[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-style:solid;border-color:var(--ink)}
+.tg.add{border-color:var(--line)}
+.ic.out{background:transparent!important;border:1.5px dashed var(--faint);color:var(--muted)}
+.trow{display:flex;align-items:center;gap:12px;padding:8px 10px;font-weight:600}
+.trow .ic{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none}
+.trow .ic svg{width:17px;height:17px}
+.trow .nm{flex:1;min-width:0}
+.trow .tv{font-size:13px;color:var(--muted);font-weight:500}
+.trlist{display:flex;flex-direction:column;gap:10px}
+.trc{background:var(--soft);border-radius:22px;padding:12px}
+.trh{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.trh .ic{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none}
+.trh .ic svg{width:16px;height:16px}
+.trh b{flex:1;min-width:0}
+.trh span:last-child{font-size:13px;color:var(--muted)}
+.dotcal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;justify-items:center}
+.dotcal i{width:12px;height:12px;border-radius:50%;background:var(--ring0);display:block}
+.dotcal i.on{background:var(--ink)}
+.dotcal i.fut{background:transparent;border:1.5px solid var(--ring0)}
+.dotcal i.e{background:transparent}
+.dotcal b{font-size:10px;font-weight:600;color:var(--muted);line-height:1}
 </style>
 </head>
 <body>
@@ -346,6 +372,15 @@ prevWeek:['Poprzedni tydzień','Previous week','Попередній тижде�
 others:['Pozostałe · {0}','More · {0}','Інші · {0}'],showLess:['Zwiń','Show less','Згорнути'],pinTop:['Przypnij na górze','Pin to top','Закріпити вгорі'],shade:['Odcień','Shade','Відтінок'],
 SH:[['pastel','żywy','głęboki'],['pastel','vivid','deep'],['пастель','яскравий','глибокий']],
 HUE:[['Róż','Koral','Pomarańcz','Cytryna','Limonka','Mięta','Błękit','Chaber','Lila','Orchidea','Piasek','Szarość'],['Pink','Coral','Orange','Lemon','Lime','Mint','Sky','Cornflower','Lilac','Orchid','Sand','Grey'],['Рожевий','Кораловий','Помаранчевий','Лимонний','Лаймовий','М’ятний','Блакитний','Волошковий','Бузковий','Орхідея','Пісочний','Сірий']],
+ritDoneOf:['rytuałów zrobionych · {0} z {1}','of rituals done · {0} of {1}','ритуалів виконано · {0} з {1}'],ritRateK:['rytuałów zrobionych','of rituals done','ритуалів виконано'],
+traces:['Kropki','Dots','Крапки'],tracesSub:['bez oceny','no judgement','без оцінок'],addTrace:['Dodaj kropkę','Add a dot','Додати крапку'],
+newTrace:['Nowa <em>kropka</em>','New <em>dot</em>','Нова <em>крапка</em>'],editTrace:['Edytuj <em>kropkę</em>','Edit <em>dot</em>','Редагувати <em>крапку</em>'],
+traceInfo:['Kropki zapisujesz dla świadomości. Nie rosną z nich listki, nie liczą się do serii i nie widać ich w kalendarzu.','Dots are for awareness. They don’t grow leaves, don’t count toward streaks and don’t show in the calendar.','Крапки — для усвідомлення. Вони не ростять листків, не рахуються в серію й не видні в календарі.'],
+tracesIn:['Kropki · {0}','Dots · {0}','Крапки · {0}'],tracesNone:['W tym miesiącu jeszcze nic.','Nothing this month yet.','Цього місяця ще нічого.'],seeMore:['Zobacz więcej','See more','Детальніше'],
+lastTime:['ostatnio {0}','last {0}','востаннє {0}'],daysAgo:['{0} temu','{0} ago','{0} тому'],notCounted:['nie liczy się do roślinki','doesn’t grow the plant','не впливає на рослинку'],
+toTraceBtn:['Zamień na kropkę','Make it a dot','Зробити крапкою'],toCardBtn:['Zamień na kartę','Make it a card','Зробити карткою'],isTrace:['{0}: kropka','{0}: dot','{0}: крапка'],
+ritDoneToday:['zrobione: {0}','done: {0}','виконано: {0}'],ritDoneK:['rytuały zrobione','rituals done','ритуали виконано'],
+f_times:[['raz','razy','razy'],['time','times','times'],['раз','рази','разів']],
 appName:['Leaflet','Leaflet','Leaflet'],
 tabToday:['Dziś','Today','Сьогодні'],tabMonth:['Miesiąc','Month','Місяць'],tabGarden:['Ogród','Garden','Сад'],tabMore:['Więcej','More','Більше'],
 pickLang:['Wybierz język · Choose language · Оберіть мову','Wybierz język · Choose language · Оберіть мову','Wybierz język · Choose language · Оберіть мову'],
@@ -405,7 +440,7 @@ lgCards:['karty','cards','картки'],lgRits:['rytuały','rituals','риту�
 gardenEb:['Twój ogród','Your garden','Твій сад'],
 gBloom:['{0} <em>kwitnie</em>','{0} <em>is blooming</em>','{0} <em>цвіте</em>'],gGrow:['{0} <em>rośnie</em>','{0} <em>is growing</em>','{0} <em>росте</em>'],gSprout:['{0} <em>kiełkuje</em>','{0} <em>is sprouting</em>','{0} <em>проростає</em>'],
 toFlower:['{0} do kwiatu','{0} to a flower','{0} до квітки'],toFlower2:['{0} do drugiego kwiatu','{0} to the second flower','{0} до другої квітки'],toFlower3:['{0} do trzeciego kwiatu','{0} to the third flower','{0} до третьої квітки'],fullBloom:['pełny rozkwit','full bloom','повний розквіт'],
-gInfo:['Każdy dzień z kartą to listek w jej kolorze. Roślinka budzi się, gdy coś robisz. Gdy robisz 80% rytuałów w miesiącu, świeci nad nią słońce.','Every day with a card grows a leaf in its color. The plant wakes up when you do things. When you do 80% of your rituals in a month, the sun comes out.','Кожен день з карткою додає листок її кольору. Рослинка прокидається, коли ти щось робиш. Коли виконуєш 80% ритуалів за місяць, над нею світить сонце.'],
+gInfo:['Każdy dzień z kartą to listek w jej kolorze. Roślinka budzi się, gdy coś robisz. Za 20 zrobionych rytuałów w miesiącu świeci nad nią słońce.','Every day with a card grows a leaf in its color. The plant wakes up when you do things. After 20 rituals done in a month, the sun comes out.','Кожен день з карткою додає листок її кольору. Рослинка прокидається, коли ти щось робиш. Після 20 виконаних ритуалів за місяць над нею світить сонце.'],
 prevMonths:['Poprzednie miesiące','Previous months','Попередні місяці'],
 potBody:['{0} dobrych dni, najdłuższa seria {1}.','{0} good days, longest streak {1}.','{0} добрих днів, найдовша серія {1}.'],seeMonth:['Zobacz miesiąc','See month','Переглянути місяць'],
 settings:['Ustawienia','Settings','Налаштування'],moreTtl:['Twój <em>Leaflet</em>','Your <em>Leaflet</em>','Твій <em>Leaflet</em>'],
@@ -439,7 +474,7 @@ ACC:[['Cytryna','Róż','Limonka','Chaber','Lila','Mięta'],['Lemon','Pink','Lim
 const NAMES={
 ruch:['Ruch','Movement','Рух'],wyjscia:['Wyjścia','Outings','Виходи'],rozwoj:['Rozwój','Growth','Розвиток'],dom:['Dom','Home','Дім'],nauka:['Nauka','Learning','Навчання'],praca:['Praca','Work','Робота'],dbanie:['Dbanie o siebie','Self-care','Турбота про себе'],tworczosc:['Twórczość','Creativity','Творчість'],
 rower:['Rower','Bike','Велосипед'],silownia:['Siłownia','Gym','Спортзал'],basen:['Basen','Pool','Басейн'],joga:['Joga','Yoga','Йога'],spacer:['Spacer','Walk','Прогулянка'],
-wedrowka:['Wędrówka','Hike','Похід'],wycieczka:['Wycieczka','Trip','Подорож'],spotkanie:['Spotkanie','Friends','Зустріч'],kultura:['Kultura','Culture','Культура'],kawiarnia:['Kawiarnia','Café','Кав’ярня'],
+wedrowka:['Wędrówka','Hike','Похід'],wycieczka:['Wycieczka','Trip','Подорож'],spotkanie:['Spotkanie','Friends','Зустріч'],kultura:['Kultura','Culture','Культура'],kawiarnia:['Kawiarnia','Café','Кав’ярня'],wynos:['Jedzenie na wynos','Takeaway','Їжа на винос'],serial:['Serial','TV series','Серіал'],zakupy:['Zakupy','Shopping','Покупки'],scroll:['Scrollowanie','Doomscrolling','Скролінг'],slodycze:['Słodycze','Sweets','Солодощі'],pozno:['Późno spać','Late night','Пізно спати'],
 medytacja:['Medytacja','Meditation','Медитація'],terapia:['Terapia','Therapy','Терапія'],dziennik:['Dziennik','Journal','Щоденник'],wdziecznosc:['Wdzięczność','Gratitude','Вдячність'],
 sprzatanie:['Sprzątanie','Cleaning','Прибирання'],gotowanie:['Gotowanie','Cooking','Готування'],naczynia:['Naczynia','Dishes','Посуд'],pranie:['Pranie','Laundry','Прання'],kwiaty:['Kwiaty','Plants','Квіти'],
 jezyk:['Język','Language','Мова'],kurs:['Kurs','Course','Курс'],czytanie:['Czytanie','Reading','Читання'],fiszki:['Fiszki','Flashcards','Картки слів'],
@@ -466,7 +501,7 @@ const _=(k,...a)=>{const v=(STR[k]||[])[LI()]??(STR[k]||[])[0]??k;return typeof 
 const pf=n=>{if(LANG==='en')return n===1?0:1;const t=n%10,h=n%100;if(LANG==='uk'){if(t===1&&h!==11)return 0;if(t>=2&&t<=4&&(h<12||h>14))return 1;return 2}if(n===1)return 0;if(t>=2&&t<=4&&(h<12||h>14))return 1;return 2};
 const P=(n,k)=>`${n} ${_(k)[pf(n)]}`;
 const keyOf2=x=>x.key||(NAMES[x.id]?x.id:null)||Object.keys(NAMES).find(k=>NAMES[k].includes(x.name))||null;
-function relabel(){[...(S.activities||[]),...(S.rituals||[])].forEach(x=>{const k=keyOf2(x);if(k&&NAMES[k].includes(x.name)){x.key=k;x.name=NM(k)}})}
+function relabel(){[...(S.activities||[]),...(S.rituals||[]),...(S.traces||[])].forEach(x=>{const k=keyOf2(x);if(k&&NAMES[k].includes(x.name)){x.key=k;x.name=NM(k)}})}
 const NM=id=>(NAMES[id]||[])[LI()]||(NAMES[id]||[])[0]||id;
 const WDN=()=>_('WDN');
 
@@ -510,6 +545,9 @@ const IC={
  clock:sv('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
  mail:sv('<rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="m4 7 8 6 8-6"/>'),
  list:sv('<path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.5" cy="6.5" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="17.5" r="1"/>'),
+ tv:sv('<rect x="3.5" y="6" width="17" height="11.5" rx="2.5"/><path d="M9 20.5h6M9.5 3.5 12 6l2.5-2.5"/>'),
+ bag:sv('<path d="M5 8h14l-1 12H6z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>'),
+ phone:sv('<rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/>'),
  wave:sv('<path d="M3 12h2l2-5 3 10 3-12 3 10 2-3h3"/>'),
 };
 const UI={
@@ -543,6 +581,7 @@ const AREAS=[
  {id:'dbanie',icon:'heart',c:7,items:[['c','pielegnacja','heart'],['c','drzemka','moon'],['r','zeby','tooth',1],['r','woda','glass',1],['r','witaminy','pill'],['r','sen','moon']]},
  {id:'tworczosc',icon:'palette',c:3,items:[['c','spiew','mic',1,20],['c','fortepian','piano',1,30],['c','rysowanie','brush'],['c','pisanie','pen'],['c','zdjecia','camera'],['r','rozgrzewka','wave']]},
 ];
+const TSUGG=[['kawiarnia','coffee'],['wynos','bag'],['serial','tv'],['zakupy','bag'],['scroll','phone'],['slodycze','heart'],['pozno','moon']];
 const BLOOM=20, QMIN=[10,15,20,30,45,60,90];
 const fmtMin=m=>m<60?`${m} ${_('min')}`:`${Math.floor(m/60)} ${_('hr')}`+(m%60?` ${m%60} ${_('min')}`:'');
 const schedTxt=d=>d.length===7?_('everyDayLc'):d.join()==='0,1,2,3,4'?_('weekdaysLc'):d.map(x=>WDN()[x]).join(', ');
@@ -565,7 +604,7 @@ const RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').match
 let S, view='today', cur=today(), calYM=today().slice(0,7), dl, OB={step:0,areas:[],items:null,key:''}, dir='';
 const defRits=()=>[{id:'zeby',name:NM('zeby'),icon:'tooth',days:[...ALL]},{id:'portfolio',name:NM('portfolio'),icon:'palette',days:[...WORK]}];
 const defActs=()=>[['rower','bike',0],['silownia','barbell',1],['basen','swim',2],['wedrowka','mountain',3],['wycieczka','compass',4]].map(([id,icon,c])=>({id,name:NM(id),icon,c,min:0}));
-const fresh=()=>({v:2,lang:LANG,theme:S&&S.theme?{...S.theme}:{accent:0,mode:'light'},areas:['ruch','wyjscia'],activities:defActs(),rituals:defRits(),days:{},meta:{created:Date.now(),lastBackup:null}});
+const fresh=()=>({v:2,lang:LANG,theme:S&&S.theme?{...S.theme}:{accent:0,mode:'light'},areas:['ruch','wyjscia'],activities:defActs(),rituals:defRits(),traces:[],days:{},meta:{created:Date.now(),lastBackup:null}});
 function lsGet(){try{const s=localStorage.getItem(KEY);return s?JSON.parse(s):null}catch(e){return null}}
 function lsSet(v){try{localStorage.setItem(KEY,JSON.stringify(v))}catch(e){}}
 function idb(){return new Promise((res,rej)=>{try{const r=indexedDB.open('pozadomem',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
@@ -573,7 +612,7 @@ async function idbGet(){try{const db=await idb();return await new Promise(r=>{co
 async function idbSet(v){try{const db=await idb();db.transaction('kv','readwrite').objectStore('kv').put(JSON.parse(JSON.stringify(v)),KEY)}catch(e){}}
 let asked=false;
 function save(){if(S.demo)return;S.meta.updated=Date.now();lsSet(S);idbSet(S);if(!asked&&navigator.storage&&navigator.storage.persist){asked=true;navigator.storage.persist().catch(()=>{})}}
-function migrate(s){if(!Array.isArray(s.areas))s.areas=['ruch','wyjscia'];if(!s.lang)s.lang='pl';if(!s.theme)s.theme={accent:0,mode:'light'};if(!s.rituals)s.rituals=defRits();return s}
+function migrate(s){if(!Array.isArray(s.areas))s.areas=['ruch','wyjscia'];if(!s.lang)s.lang='pl';if(!s.theme)s.theme={accent:0,mode:'light'};if(!s.rituals)s.rituals=defRits();if(!Array.isArray(s.traces))s.traces=[];return s}
 
 function demo(){
   const s=fresh();s.demo=true;let seed=11;const r=()=>(seed=(seed*16807)%2147483647)/2147483647;
@@ -585,6 +624,7 @@ function demo(){
     if(Object.keys(a).length)s.days[k]={acts:a}}
   s.days[add(t,-1)]={acts:{rower:{},wedrowka:{}},note:'Kampinos, 24 km'};
   s.meta.created=parse(add(t,-115)).getTime();
+  s.traces=[{id:'kawiarnia',key:'kawiarnia',name:NM('kawiarnia'),icon:'coffee'}];[2,5,9,12,16,20,23,27,33,38].forEach(i=>{const k=add(t,-i);s.days[k]=s.days[k]||{};s.days[k].tr={kawiarnia:1}});
   for(let i=110;i>=1;i--){const k=add(t,-i);const rt={};const w=(parse(k).getDay()+6)%7;if(r()<.85)rt.zeby=1;if(w<5&&r()<.6)rt.portfolio=1;if(Object.keys(rt).length){s.days[k]=s.days[k]||{};s.days[k].rit=rt}}
   return s;
 }
@@ -606,16 +646,22 @@ const nActs=k=>actsOf(k).length;
 const colorOf=a=>typeof a.c==='string'&&HEX.test(a.c)?a.c:COLORS[(a.c??0)%COLORS.length];
 const accentHex=()=>{const th=(S&&S.theme)||{};return HEX.test(th.accentHex||'')?th.accentHex:(ACCENTS[th.accent||0]||ACCENTS[0])};
 const actById=id=>S.activities.find(a=>a.id===id);
-function setDay(k,fn){const d=JSON.parse(JSON.stringify(day(k)));fn(d);if(d.acts&&!Object.keys(d.acts).length)delete d.acts;if(d.rit&&!Object.keys(d.rit).length)delete d.rit;if(d.note!=null&&!String(d.note).trim())delete d.note;if(!d.acts&&!d.note&&!d.rit)delete S.days[k];else S.days[k]=d;save()}
+function setDay(k,fn){const d=JSON.parse(JSON.stringify(day(k)));fn(d);if(d.acts&&!Object.keys(d.acts).length)delete d.acts;if(d.rit&&!Object.keys(d.rit).length)delete d.rit;if(d.tr&&!Object.keys(d.tr).length)delete d.tr;if(d.note!=null&&!String(d.note).trim())delete d.note;if(!d.acts&&!d.note&&!d.rit&&!d.tr)delete S.days[k];else S.days[k]=d;save()}
 const wdi=k=>(parse(k).getDay()+6)%7;
 const ritsFor=k=>(S.rituals||[]).filter(r=>r.days.includes(wdi(k)));
 const ritDone=k=>{const r=day(k).rit||{};return ritsFor(k).filter(x=>r[x.id]).length};
 const ritFrac=k=>{const n=ritsFor(k).length;return n?ritDone(k)/n:null};
 const ritById=id=>(S.rituals||[]).find(r=>r.id===id);
+function ritCounts(ym){let tot=0,dn=0;const dim=new Date(+ym.slice(0,4),+ym.slice(5,7),0).getDate();for(let d=1;d<=dim;d++){const k=ym+'-'+pad(d);if(k>today())break;if(S.meta.created&&k<keyOf(new Date(S.meta.created))&&!S.days[k])continue;tot+=ritsFor(k).length;dn+=ritDone(k)}return tot?[dn,tot]:null}
 function ritRate(ym){let tot=0,dn=0;const dim=new Date(+ym.slice(0,4),+ym.slice(5,7),0).getDate();for(let d=1;d<=dim;d++){const k=ym+'-'+pad(d);if(k>today())break;if(S.meta.created&&k<keyOf(new Date(S.meta.created))&&!S.days[k])continue;tot+=ritsFor(k).length;dn+=ritDone(k)}return tot?dn/tot:null}
 function streak(){let k=today();if(!nActs(k))k=add(k,-1);let n=0,gap=0;for(let i=0;i<4000;i++){if(nActs(k)){n++;gap=0}else{gap++;if(gap>=2)break}k=add(k,-1)}return n}
 function bestStreakIn(ym){let best=0,run=0,gap=0;const dim=new Date(+ym.slice(0,4),+ym.slice(5,7),0).getDate();for(let d=1;d<=dim;d++){const k=ym+'-'+pad(d);if(k>today())break;if(nActs(k)){run++;gap=0;best=Math.max(best,run)}else{gap++;if(gap>=2)run=0}}return best}
 const pre=k=>!!(S.meta&&S.meta.created)&&k<keyOf(new Date(S.meta.created))&&!S.days[k];
+const trById=id=>(S.traces||[]).find(x=>x.id===id);
+const trIn=(ym,id)=>Object.keys(S.days).filter(k=>k.startsWith(ym)&&(day(k).tr||{})[id]).sort();
+const trLast=id=>{const ks=Object.keys(S.days).filter(k=>k<=today()&&(day(k).tr||{})[id]).sort();return ks[ks.length-1]||null};
+const ago=k=>{if(!k)return '';const n=Math.round((parse(today())-parse(k))/864e5);return n===0?_('todayLc'):n===1?_('yesterdayLc'):_('daysAgo',P(n,'f_day'))};
+const SUN_RITS=20;
 const minOf=(k,id)=>{const e=(day(k).acts||{})[id];return e&&e.m||0};
 const hasMove=()=>!S.areas||!S.areas.length||S.areas.some(a=>a==='ruch'||a==='wyjscia');
 const W=()=>hasMove()?_('wMove'):_('wGen');
@@ -693,7 +739,7 @@ function drawPlant(o){
   return s+'</svg>';
 }
 function plantSVG(ym,{animate=false,live=false}={}){
-  const rr=ritRate(ym),sun=rr!=null&&rr>=.8,ks=monthDays(ym),n=ks.length;
+  const rcn=ritCounts(ym),sun=!!rcn&&rcn[0]>=SUN_RITS,ks=monthDays(ym),n=ks.length;
   const leaves=ks.map(k=>{const a=actsOf(k);return{col:colorOf(a[0]),big:a.length>1}});
   const blooms=n>=28?3:n>=25?2:n>=BLOOM?1:0;
   const isCur=ym===today().slice(0,7);
@@ -762,6 +808,8 @@ function renderToday(v){
    <button class="addbtn" id="addA">${UI.plus}${_('addCard')}</button>
    <div class="sechead"><h2>${_('rits')}</h2><span id="rc"></span></div>
    <div class="rits" id="rits"></div>
+   <div class="sechead"><h2>${_('traces')}</h2><span>${_('tracesSub')}</span></div>
+   <div class="tgs" id="trs"></div>
    <input class="note" id="note" maxlength="120" placeholder="${_('note')}" value="${esc(day(cur).note||'')}" autocomplete="off">
    ${needBk?`<button class="nudge" id="bk">${UI.save}${_('nudge')}</button>`:''}`;
   const go=v.querySelector('#go');if(go)go.onclick=startOwn;
@@ -773,7 +821,7 @@ function renderToday(v){
   const note=v.querySelector('#note');let nt;
   note.onfocus=()=>{if(S.demo){note.blur();startOwn()}};
   note.oninput=()=>{clearTimeout(nt);nt=setTimeout(()=>setDay(cur,d=>{d.note=note.value}),400)};
-  renderRits(v);
+  renderRits(v);renderTraces(v);
   const cards=v.querySelector('#cards');
   const {top,rest}=rankCards(),done=day(cur).acts||{};
   const shown=showAll?[...top,...rest]:[...top,...rest.filter(a=>done[a.id])],hidden=rest.length-(shown.length-top.length);
@@ -804,7 +852,7 @@ function refreshToday(v,first){
   v.querySelector('#wr').innerHTML=weekRing(wk);
   odo(v.querySelector('#wc'),wk.filter(Boolean).length);
   odo(v.querySelector('#sn'),streak());
-  const rs=ritsFor(cur),rc=v.querySelector('#rc');if(rc)rc.textContent=rs.length?_('ritCount',ritDone(cur),rs.length):_('dayOff');
+  const rs=ritsFor(cur),rc=v.querySelector('#rc');if(rc)rc.textContent=rs.length?(ritDone(cur)?_('ritDoneToday',ritDone(cur)):''):_('dayOff');
   if(first)syncCards(v);
 }
 function renderRits(v){
@@ -822,6 +870,53 @@ function toggleRit(b,v){
 }
 function suggestions(kind,have){const pri=AREAS.filter(a=>(S.areas||[]).includes(a.id)).concat(AREAS.filter(a=>!(S.areas||[]).includes(a.id)));const out=[],seen=new Set(have.map(x=>x.toLowerCase()));
   pri.forEach(a=>a.items.forEach(([k,id,icon,on,min,days])=>{const n=NM(id);if(k===kind&&!seen.has(n.toLowerCase())){seen.add(n.toLowerCase());out.push({n,key:id,icon,min:min||0,days})}}));return out.slice(0,10)}
+function renderTraces(v){
+  const box=v.querySelector('#trs');if(!box)return;const on=day(cur).tr||{};
+  box.innerHTML=(S.traces||[]).map(x=>`<button class="tg" data-tr="${x.id}" aria-pressed="${!!on[x.id]}">${IC[x.icon]||IC.sun}${esc(x.name)}</button>`).join('')+`<button class="tg add" id="addT">${UI.plus}${(S.traces||[]).length?_('add'):_('addTrace')}</button>`;
+  box.querySelectorAll('[data-tr]').forEach(b=>b.onclick=()=>{if(S.demo){startOwn();return}const id=b.dataset.tr,o=b.getAttribute('aria-pressed')!=='true';setDay(cur,d=>{d.tr=d.tr||{};if(o)d.tr[id]=1;else delete d.tr[id]});b.setAttribute('aria-pressed',o);if(o&&!RM)b.animate([{transform:'scale(.9)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:320,easing:'cubic-bezier(.3,1.6,.5,1)'})});
+  box.querySelector('#addT').onclick=()=>editTrace();
+}
+function moveHistory(from,to,fk,tk,entry){Object.keys(S.days).forEach(k=>setDay(k,d=>{if(d[fk]&&d[fk][from]){delete d[fk][from];d[tk]=d[tk]||{};d[tk][to]=entry}}))}
+function editTrace(x){
+  if(S.demo){startOwn();return}
+  const isNew=!x;let st=x?{...x}:{name:'',icon:'coffee'};
+  const have=new Set([...(S.traces||[]),...S.activities].map(z=>z.name.toLowerCase()));
+  const sg=isNew?TSUGG.map(([id,icon])=>({id,icon,n:NM(id)})).filter(g=>!have.has(g.n.toLowerCase())):[];
+  const body=`<p>${_('traceInfo')}</p>${sg.length?`<div class="sugg">${sg.map((g,i)=>`<button data-s="${i}">${esc(g.n)}</button>`).join('')}</div>`:''}
+   <input class="tin" id="tn" maxlength="24" placeholder="${_('name')}" value="${esc(st.name)}" autocomplete="off">
+   <div class="lbl">${_('icon')}</div>${iconPicker(st.icon)}`;
+  const acts=[{label:_('cancel')}];
+  if(!isNew){
+    acts.unshift({label:_('toCardBtn'),fn:()=>{const id='a'+Date.now().toString(36);S.activities.push({id,key:x.key,name:x.name,icon:x.icon,c:PAL[LEG[S.activities.length%8]][1],min:0});moveHistory(x.id,id,'tr','acts',{});S.traces=S.traces.filter(z=>z.id!==x.id);save();render();toast(_('isCard',x.name))}});
+    acts.unshift({label:_('del'),kind:'danger',fn:()=>{setTimeout(()=>sheet({title:_('delQ',esc(x.name)),body:`<p>${_('ritDelBody')}</p>`,actions:[{label:_('keep')},{label:_('del'),kind:'danger',fn:()=>{S.traces=S.traces.filter(z=>z.id!==x.id);Object.keys(S.days).forEach(k=>setDay(k,d=>{if(d.tr)delete d.tr[x.id]}));save();render();toast(_('deleted'))}}]}),50)}});
+  }
+  acts.push({label:isNew?_('add'):_('save'),kind:'black',fn:sc=>{const nm=sc.querySelector('#tn').value.trim();if(!nm){sc.querySelector('#tn').focus();return false}
+    if(isNew){S.traces=S.traces||[];S.traces.push({id:'t'+Date.now().toString(36),key:st.key,name:nm,icon:st.icon});toast(_('added',nm))}else{Object.assign(trById(x.id),{name:nm,icon:st.icon});toast(_('saved'))}save();render()}});
+  sheet({title:isNew?_('newTrace'):_('editTrace'),body,actions:acts,onOpen:sc=>{
+    const selIc=()=>sc.querySelectorAll('#ip button').forEach(z=>z.setAttribute('aria-pressed',z.dataset.ic===st.icon));
+    sc.querySelectorAll('#ip button').forEach(b=>b.onclick=()=>{st.icon=b.dataset.ic;selIc()});
+    sc.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const g=sg[+b.dataset.s];sc.querySelector('#tn').value=g.n;st.icon=g.icon;st.key=g.id;selIc()});
+  }});
+}
+function dotCal(ym,id){
+  const [y,m]=ym.split('-').map(Number),dim=new Date(y,m,0).getDate(),lead=(new Date(y,m-1,1).getDay()+6)%7,t=today(),set=new Set(trIn(ym,id));
+  let s=WDN().map(d=>`<b>${d.slice(0,1)}</b>`).join('');for(let i=0;i<lead;i++)s+='<i class="e"></i>';
+  for(let d=1;d<=dim;d++){const k=ym+'-'+pad(d);s+=`<i class="${set.has(k)?'on':k>t?'fut':''}" title="${d}"></i>`}
+  return `<div class="dotcal" aria-hidden="true">${s}</div>`;
+}
+function traceSummary(ym){
+  const tr=S.traces||[];if(!tr.length)return '';
+  const rows=tr.map(x=>({x,n:trIn(ym,x.id).length})).sort((a,b)=>b.n-a.n);
+  const top=rows.filter(r=>r.n).slice(0,3);
+  return `<div class="sechead"><h2>${_('tracesIn',mNom(ym).toLowerCase())}</h2><span>${_('tracesSub')}</span></div>
+   <div class="group">${top.length?top.map(({x,n})=>`<div class="trow"><span class="ic out">${IC[x.icon]||IC.sun}</span><span class="nm">${esc(x.name)}</span><span class="tv">${n}× · ${ago(trLast(x.id))}</span></div>`).join(''):`<p class="info" style="padding:10px">${_('tracesNone')}</p>`}
+   <button class="rowbtn" id="trMore"><span class="ic">${UI.cal}</span>${_('seeMore')}<span class="chev">${UI.right}</span></button></div>`;
+}
+function traceSheet(ym){
+  const tr=S.traces||[];
+  const rows=tr.map(x=>({x,n:trIn(ym,x.id).length})).sort((a,b)=>b.n-a.n);
+  sheet({title:`${_('traces')} <em>${mNom(ym).toLowerCase()}</em>`,body:`<div class="trlist">${rows.map(({x,n})=>`<div class="trc"><div class="trh"><span class="ic out">${IC[x.icon]||IC.sun}</span><b>${esc(x.name)}</b><span>${n}×${trLast(x.id)?' · '+_('lastTime',ago(trLast(x.id))):''}</span></div>${dotCal(ym,x.id)}</div>`).join('')}</div><p style="font-size:13px">${_('traceInfo')}</p>`,actions:[{label:_('close'),kind:'black'}]});
+}
 function editRit(x){
   if(S.demo){startOwn();return}
   const isNew=!x;let st=x?{...x,days:[...x.days]}:{name:'',icon:'book',days:[...ALL]};
@@ -893,7 +988,7 @@ function editAct(a){
    <div class="lbl">${_('usualTime')}</div><div class="sugg" id="mp">${[...new Set([0,...QMIN,st.min||0])].sort((x,y)=>x-y).map(q=>`<button data-m="${q}" aria-pressed="${(st.min||0)===q}">${q?fmtMin(q):_('noTime')}</button>`).join('')}</div>
    <p style="font-size:13px">${_('timeHint')}</p>`;
   const acts=[{label:_('cancel')}];
-  if(!isNew)acts.unshift({label:_('del'),kind:'danger',fn:()=>{confirmDelete(a)}});
+  if(!isNew){acts.unshift({label:_('toTraceBtn'),fn:()=>{const id='t'+Date.now().toString(36);S.traces=S.traces||[];S.traces.push({id,key:a.key,name:a.name,icon:a.icon});moveHistory(a.id,id,'acts','tr',1);S.activities=S.activities.filter(z=>z.id!==a.id);save();render();toast(_('isTrace',a.name))}});acts.unshift({label:_('del'),kind:'danger',fn:()=>{confirmDelete(a)}})}
   acts.push({label:isNew?_('add'):_('save'),kind:'black',fn:sc=>{const nm=sc.querySelector('#an').value.trim();if(!nm){sc.querySelector('#an').focus();return false}
     const col=PAL[hh][ss];if(isNew){S.activities.push({id:'a'+Date.now().toString(36),name:nm,icon:st.icon,c:col,min:st.min||0,pin:!!st.pin});toast(_('added',nm))}else{Object.assign(actById(a.id),{name:nm,icon:st.icon,c:col,min:st.min||0,pin:!!st.pin});toast(_('saved'))}save();render()}});
   sheet({title:isNew?_('newCard'):_('editCard'),body,actions:acts,onOpen:sc=>{
@@ -914,13 +1009,13 @@ function confirmDelete(a){let used=0;Object.values(S.days).forEach(d=>{if(d.acts
 /* MONTH */
 function renderMonth(v){
   const t=today(),[y,m]=calYM.split('-').map(Number),dim=new Date(y,m,0).getDate(),lead=(new Date(y,m-1,1).getDay()+6)%7;
-  const act=monthDays(calYM); const prevYM=keyOf(new Date(y,m-2,1)).slice(0,7); const prevN=monthDays(prevYM).length;
+  const act=monthDays(calYM);
   let cells=WDN().map(d=>`<div class="h">${d}</div>`).join('');
   for(let i=0;i<lead;i++)cells+='<div></div>';
   for(let d=1;d<=dim;d++){const k=calYM+'-'+pad(d);const cols=actsOf(k).map(colorOf);const fut=k>t;const rf=ritFrac(k);
     cells+=`<button class="cd ${fut?'fut':pre(k)?'pre':''} ${k===t?'today':''} ${cols.length?'pop':''}" data-k="${k}" ${fut?'disabled':''} aria-label="${fmt(k,{day:'numeric',month:'long'})}, ${cols.length}">${fut||pre(k)?'':ring(cols,40,5.5,'var(--ring0)',rf)}<b>${d}</b>${cols.length>=3?`<span class="star">${UI.star}</span>`:''}</button>`}
   const counts=S.activities.map(a=>({a,n:act.filter(k=>day(k).acts[a.id]).length,tm:act.reduce((s,k)=>s+minOf(k,a.id),0)})).sort((p,q)=>q.n-p.n);
-  const isCur=calYM===t.slice(0,7);const rr=ritRate(calYM),bs=bestStreakIn(calYM);
+  const isCur=calYM===t.slice(0,7);const rr=ritRate(calYM),rc=ritCounts(calYM),bs=bestStreakIn(calYM);
   v.innerHTML=`${demoPill()}
    <div class="headrow"><div><div class="eyebrow">${mNom(calYM)} ${y}</div><h1 class="ttl"><span class="odo" id="mc"></span> ${_('f_day')[pf(act.length)]} <em>${W()}</em></h1></div>
     <div style="display:flex;gap:6px"><button class="round" id="pm" aria-label="${_('prevMonth')}">${UI.left}</button><button class="round" id="nm" aria-label="${_('nextMonth')}" ${isCur?'disabled':''}>${UI.right}</button></div></div>
@@ -928,8 +1023,9 @@ function renderMonth(v){
    <div class="chips">${counts.map(({a,n,tm})=>`<span class="chip ${n?'':'off'}" style="--c:${colorOf(a)}"><i>${IC[a.icon]||IC.sun}</i>${esc(a.name)} ${n}${tm?' · '+fmtMin(tm):''}</span>`).join('')}</div>
    <div class="legend"><span><i style="border:3.5px solid #FF7EB6"></i>${_('lgCards')}</span><span><i style="border:3.5px solid var(--ink);width:10px;height:10px"></i>${_('lgRits')}</span></div>
    <div class="tiles"><div class="tile pink"><div class="v">${bs}<small> ${_('f_day')[pf(bs)]}</small></div><div class="k">${_('longest')}</div></div>
-   <div class="tile blue"><div class="v">${prevN}<small> ${_('f_day')[pf(prevN)]}</small></div><div class="k">${mNom(prevYM).toLowerCase()}</div></div>
-   <div class="tile"><div class="v">${rr==null?'–':Math.round(rr*100)}<small>${rr==null?'':'%'}</small></div><div class="k">${_('ritsLc')}</div></div></div>`;
+   <div class="tile"><div class="v">${rc?rc[0]:0}<small> ${_('f_times')[pf(rc?rc[0]:0)]}</small></div><div class="k">${_('ritDoneK')}</div></div></div>
+   ${traceSummary(calYM)}`;
+  const tm=v.querySelector('#trMore');if(tm)tm.onclick=()=>traceSheet(calYM);
   v.querySelectorAll('.cd.pop').forEach((c,i)=>c.querySelector('svg').style.animationDelay=(i*18)+'ms');
   const go=v.querySelector('#go');if(go)go.onclick=startOwn;
   odo(v.querySelector('#mc'),act.length);
@@ -967,12 +1063,13 @@ async function backup(){
 }
 function applyImport(obj){
   if(!obj||typeof obj!=='object'||!obj.days){toast(_('notBk'));return}
-  const days={};Object.entries(obj.days).forEach(([k,d])=>{if(!/^\d{4}-\d\d-\d\d$/.test(k)||!d)return;const n={};if(d.acts&&Object.keys(d.acts).length){n.acts={};Object.keys(d.acts).forEach(id=>{const m=+((d.acts[id]||{}).m);n.acts[id]=m>0&&m<=1440?{m:Math.round(m)}:{}})}if(d.note)n.note=String(d.note).slice(0,200);if(d.rit&&Object.keys(d.rit).length){n.rit={};Object.keys(d.rit).forEach(id=>n.rit[id]=1)}if(n.acts||n.note||n.rit)days[k]=n});
+  const days={};Object.entries(obj.days).forEach(([k,d])=>{if(!/^\d{4}-\d\d-\d\d$/.test(k)||!d)return;const n={};if(d.acts&&Object.keys(d.acts).length){n.acts={};Object.keys(d.acts).forEach(id=>{const m=+((d.acts[id]||{}).m);n.acts[id]=m>0&&m<=1440?{m:Math.round(m)}:{}})}if(d.note)n.note=String(d.note).slice(0,200);if(d.rit&&Object.keys(d.rit).length){n.rit={};Object.keys(d.rit).forEach(id=>n.rit[id]=1)}if(d.tr&&Object.keys(d.tr).length){n.tr={};Object.keys(d.tr).forEach(id=>n.tr[id]=1)}if(n.acts||n.note||n.rit||n.tr)days[k]=n});
+  const trs=Array.isArray(obj.traces)?obj.traces.filter(x=>x&&x.id&&x.name).map(x=>({id:x.id,key:x.key,name:String(x.name).slice(0,24),icon:IC[x.icon]?x.icon:'sun'})):[];
   const rits=Array.isArray(obj.rituals)?obj.rituals.filter(r=>r&&r.id&&r.name&&Array.isArray(r.days)).map(r=>({id:r.id,name:String(r.name).slice(0,24),icon:IC[r.icon]?r.icon:'sun',days:r.days.filter(d=>d>=0&&d<7)})):null;
   const acts=(obj.activities||[]).filter(a=>a&&a.id&&a.name).map((a,i)=>({id:a.id,name:String(a.name).slice(0,24),icon:IC[a.icon]?a.icon:'sun',c:Number.isInteger(a.c)||(typeof a.c==='string'&&HEX.test(a.c))?a.c:i%COLORS.length,pin:!!a.pin,min:+a.min>0&&+a.min<=600?Math.round(+a.min):0}));
   const cnt=Object.keys(days).length;
-  const replace=()=>{const keep={lang:S.lang,theme:S.theme};S=fresh();Object.assign(S,keep);if(Array.isArray(obj.areas))S.areas=obj.areas.filter(id=>AREAS.some(a=>a.id===id));if(acts.length)S.activities=acts;if(rits)S.rituals=rits;S.days=days;if(obj.meta&&obj.meta.lastBackup)S.meta.lastBackup=obj.meta.lastBackup;relabel();save();view=view==='onb'?'today':view;render(true);toast(_('loaded',P(cnt,'f_day')))};
-  const merge=()=>{if(Array.isArray(obj.areas))obj.areas.forEach(id=>{if(AREAS.some(a=>a.id===id)&&!S.areas.includes(id))S.areas.push(id)});acts.forEach(a=>{if(!actById(a.id))S.activities.push(a)});(rits||[]).forEach(r=>{if(!ritById(r.id))S.rituals.push(r)});Object.entries(days).forEach(([k,d])=>{const e=S.days[k]||{};S.days[k]={...d,...e,acts:{...(d.acts||{}),...(e.acts||{})},rit:{...(d.rit||{}),...(e.rit||{})}};if(!Object.keys(S.days[k].acts).length)delete S.days[k].acts;if(!Object.keys(S.days[k].rit).length)delete S.days[k].rit});relabel();save();render(true);toast(_('merged'))};
+  const replace=()=>{const keep={lang:S.lang,theme:S.theme};S=fresh();Object.assign(S,keep);if(Array.isArray(obj.areas))S.areas=obj.areas.filter(id=>AREAS.some(a=>a.id===id));if(acts.length)S.activities=acts;if(rits)S.rituals=rits;S.traces=trs;S.days=days;if(obj.meta&&obj.meta.lastBackup)S.meta.lastBackup=obj.meta.lastBackup;relabel();save();view=view==='onb'?'today':view;render(true);toast(_('loaded',P(cnt,'f_day')))};
+  const merge=()=>{if(Array.isArray(obj.areas))obj.areas.forEach(id=>{if(AREAS.some(a=>a.id===id)&&!S.areas.includes(id))S.areas.push(id)});acts.forEach(a=>{if(!actById(a.id))S.activities.push(a)});(rits||[]).forEach(r=>{if(!ritById(r.id))S.rituals.push(r)});S.traces=S.traces||[];trs.forEach(x=>{if(!trById(x.id))S.traces.push(x)});Object.entries(days).forEach(([k,d])=>{const e=S.days[k]||{};S.days[k]={...d,...e,acts:{...(d.acts||{}),...(e.acts||{})},rit:{...(d.rit||{}),...(e.rit||{})},tr:{...(d.tr||{}),...(e.tr||{})}};if(!Object.keys(S.days[k].tr).length)delete S.days[k].tr;if(!Object.keys(S.days[k].acts).length)delete S.days[k].acts;if(!Object.keys(S.days[k].rit).length)delete S.days[k].rit});relabel();save();render(true);toast(_('merged'))};
   if(S.demo||!Object.keys(S.days).length){replace();return}
   sheet({title:_('loadQ'),body:`<p>${_('loadBody',P(cnt,'f_day'),P(Object.keys(S.days).length,'f_day'))}</p>`,actions:[{label:_('replace'),kind:'danger',fn:replace},{label:_('merge'),kind:'black',fn:merge}]});
 }
@@ -997,6 +1094,9 @@ function renderMore(v){
    <h2 class="sec">${_('rits')}</h2>
    <div class="group">${(S.rituals||[]).map(r=>`<button class="rowbtn" data-er="${r.id}"><span class="ic inv">${IC[r.icon]||IC.sun}</span><span>${esc(r.name)}<span class="sub">${schedTxt(r.days)}</span></span><span class="chev">${UI.right}</span></button>`).join('')}
     <button class="rowbtn" id="addR2"><span class="ic">${UI.plus}</span>${_('addRit')}</button></div>
+   <h2 class="sec">${_('traces')}</h2>
+   <div class="group">${(S.traces||[]).map(x=>`<button class="rowbtn" data-et="${x.id}"><span class="ic out">${IC[x.icon]||IC.sun}</span><span>${esc(x.name)}<span class="sub">${_('notCounted')}</span></span><span class="chev">${UI.right}</span></button>`).join('')}
+    <button class="rowbtn" id="addT2"><span class="ic">${UI.plus}</span>${_('addTrace')}</button></div>
    <h2 class="sec">${_('backup')}</h2>
    <div class="group">
     <button class="rowbtn" id="bk"><span class="ic col" style="--c:${ok?'#A6D86B':'#FF7EB6'}">${UI.save}</span><span>${_('saveCopy')}<span class="sub">${S.demo?_('startFirst'):lb?_('lastCopy',new Date(lb).toLocaleDateString(LOC(),{day:'numeric',month:'long'})):_('noCopy')}</span></span><span class="chev">${UI.right}</span></button>
@@ -1016,6 +1116,8 @@ function renderMore(v){
   v.querySelector('#addA').onclick=()=>editAct();
   v.querySelectorAll('[data-er]').forEach(b=>b.onclick=()=>{if(S.demo){startOwn();return}editRit(ritById(b.dataset.er))});
   v.querySelector('#addR2').onclick=()=>editRit();
+  v.querySelectorAll('[data-et]').forEach(b=>b.onclick=()=>{if(S.demo){startOwn();return}editTrace(trById(b.dataset.et))});
+  v.querySelector('#addT2').onclick=()=>editTrace();
   v.querySelector('#bk').onclick=backup;
   v.querySelector('#im').onclick=()=>document.getElementById('fileIn').click();
   v.querySelector('#ps').onclick=()=>sheet({title:_('pasteTtl'),body:'<textarea id="pt" placeholder="{ ... }"></textarea>',actions:[{label:_('cancel')},{label:_('load'),kind:'black',fn:sc=>{try{applyImport(JSON.parse(sc.querySelector('#pt').value))}catch(e){toast(_('badPaste'));return false}}}]});
